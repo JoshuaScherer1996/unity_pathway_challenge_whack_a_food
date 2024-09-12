@@ -15,17 +15,17 @@ public class GameManagerX : MonoBehaviour
     public List<GameObject> targetPrefabs;
 
     private int score;
-    private float spawnRate = 1.5f;
+    private float _spawnRate = 1.5f;
     public bool isGameActive;
 
-    private float spaceBetweenSquares = 2.5f; 
-    private float minValueX = -3.75f; //  x value of the center of the left-most square
-    private float minValueY = -3.75f; //  y value of the center of the bottom-most square
+    private const float SpaceBetweenSquares = 2.5f; 
+    private const float MinValueX = -3.75f; //  x value of the center of the left-most square
+    private const float MinValueY = -3.75f; //  y value of the center of the bottom-most square
     
     // Start the game, remove title screen, reset score, and adjust spawnRate based on difficulty button clicked
     public void StartGame()
     {
-        spawnRate /= 5;
+        _spawnRate /= 5;
         isGameActive = true;
         StartCoroutine(SpawnTarget());
         score = 0;
@@ -38,7 +38,7 @@ public class GameManagerX : MonoBehaviour
     {
         while (isGameActive)
         {
-            yield return new WaitForSeconds(spawnRate);
+            yield return new WaitForSeconds(_spawnRate);
             int index = Random.Range(0, targetPrefabs.Count);
 
             if (isGameActive)
@@ -52,8 +52,8 @@ public class GameManagerX : MonoBehaviour
     // Generate a random spawn position based on a random index from 0 to 3
     Vector3 RandomSpawnPosition()
     {
-        float spawnPosX = minValueX + (RandomSquareIndex() * spaceBetweenSquares);
-        float spawnPosY = minValueY + (RandomSquareIndex() * spaceBetweenSquares);
+        float spawnPosX = MinValueX + (RandomSquareIndex() * SpaceBetweenSquares);
+        float spawnPosY = MinValueY + (RandomSquareIndex() * SpaceBetweenSquares);
 
         Vector3 spawnPosition = new Vector3(spawnPosX, spawnPosY, 0);
         return spawnPosition;
@@ -70,7 +70,7 @@ public class GameManagerX : MonoBehaviour
     public void UpdateScore(int scoreToAdd)
     {
         score += scoreToAdd;
-        scoreText.text = "score";
+        scoreText.text = "Score: " + score;
     }
 
     // Stop game, bring up game over text and restart button
