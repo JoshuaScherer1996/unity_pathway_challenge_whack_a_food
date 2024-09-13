@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TargetX : MonoBehaviour
 {
-    private Rigidbody rb;
+    private Rigidbody _rb;
     private GameManagerX _gameManagerX;
     public int pointValue;
     public GameObject explosionFx;
@@ -18,7 +18,7 @@ public class TargetX : MonoBehaviour
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody>();
         _gameManagerX = GameObject.Find("Game Manager").GetComponent<GameManagerX>();
 
         transform.position = RandomSpawnPosition(); 
@@ -41,10 +41,10 @@ public class TargetX : MonoBehaviour
     // Generate a random spawn position based on a random index from 0 to 3
     private Vector3 RandomSpawnPosition()
     {
-        float spawnPosX = MinValueX + (RandomSquareIndex() * SpaceBetweenSquares);
-        float spawnPosY = MinValueY + (RandomSquareIndex() * SpaceBetweenSquares);
+        var spawnPosX = MinValueX + (RandomSquareIndex() * SpaceBetweenSquares);
+        var spawnPosY = MinValueY + (RandomSquareIndex() * SpaceBetweenSquares);
 
-        Vector3 spawnPosition = new Vector3(spawnPosX, spawnPosY, 0);
+        var spawnPosition = new Vector3(spawnPosX, spawnPosY, 0);
         return spawnPosition;
 
     }
@@ -69,13 +69,13 @@ public class TargetX : MonoBehaviour
     }
 
     // Display explosion particle at object's position
-    void Explode ()
+    private void Explode ()
     {
         Instantiate(explosionFx, transform.position, explosionFx.transform.rotation);
     }
 
     // After a delay, Moves the object behind background so it collides with the Sensor object
-    IEnumerator RemoveObjectRoutine ()
+    private IEnumerator RemoveObjectRoutine ()
     {
         yield return new WaitForSeconds(timeOnScreen);
         if (_gameManagerX.isGameActive)

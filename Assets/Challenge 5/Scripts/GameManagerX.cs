@@ -14,7 +14,7 @@ public class GameManagerX : MonoBehaviour
 
     public List<GameObject> targetPrefabs;
 
-    private int score;
+    private int _score;
     private float _spawnRate = 1.5f;
     public bool isGameActive;
 
@@ -23,23 +23,23 @@ public class GameManagerX : MonoBehaviour
     private const float MinValueY = -3.75f; //  y value of the center of the bottom-most square
     
     // Start the game, remove title screen, reset score, and adjust spawnRate based on difficulty button clicked
-    public void StartGame()
+    public void StartGame(int difficulty)
     {
-        _spawnRate /= 5;
+        _spawnRate /= difficulty;
         isGameActive = true;
         StartCoroutine(SpawnTarget());
-        score = 0;
+        _score = 0;
         UpdateScore(0);
         titleScreen.SetActive(false);
     }
 
     // While game is active spawn a random target
-    IEnumerator SpawnTarget()
+    private IEnumerator SpawnTarget()
     {
         while (isGameActive)
         {
             yield return new WaitForSeconds(_spawnRate);
-            int index = Random.Range(0, targetPrefabs.Count);
+            var index = Random.Range(0, targetPrefabs.Count);
 
             if (isGameActive)
             {
@@ -50,18 +50,18 @@ public class GameManagerX : MonoBehaviour
     }
 
     // Generate a random spawn position based on a random index from 0 to 3
-    Vector3 RandomSpawnPosition()
+    private Vector3 RandomSpawnPosition()
     {
-        float spawnPosX = MinValueX + (RandomSquareIndex() * SpaceBetweenSquares);
-        float spawnPosY = MinValueY + (RandomSquareIndex() * SpaceBetweenSquares);
+        var spawnPosX = MinValueX + (RandomSquareIndex() * SpaceBetweenSquares);
+        var spawnPosY = MinValueY + (RandomSquareIndex() * SpaceBetweenSquares);
 
-        Vector3 spawnPosition = new Vector3(spawnPosX, spawnPosY, 0);
+        var spawnPosition = new Vector3(spawnPosX, spawnPosY, 0);
         return spawnPosition;
 
     }
 
     // Generates random square index from 0 to 3, which determines which square the target will appear in
-    int RandomSquareIndex()
+    private int RandomSquareIndex()
     {
         return Random.Range(0, 4);
     }
@@ -69,8 +69,8 @@ public class GameManagerX : MonoBehaviour
     // Update score with value from target clicked
     public void UpdateScore(int scoreToAdd)
     {
-        score += scoreToAdd;
-        scoreText.text = "Score: " + score;
+        _score += scoreToAdd;
+        scoreText.text = "Score: " + _score;
     }
 
     // Stop game, bring up game over text and restart button
