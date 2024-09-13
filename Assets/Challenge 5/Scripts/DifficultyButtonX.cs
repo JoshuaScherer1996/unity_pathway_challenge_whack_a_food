@@ -24,7 +24,4 @@ public class DifficultyButtonX : MonoBehaviour
     {
         _gameManagerX.StartGame(difficulty);
     }
-
-
-
 }
